@@ -6,4 +6,40 @@
 @theme {
     --font-sans:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Primary purple - main brand color */
+    --color-primary-50: #f5f3f7;
+    --color-primary-100: #ebe7ef;
+    --color-primary-200: #d7cfdf;
+    --color-primary-300: #b8a9c5;
+    --color-primary-400: #9683ab;
+    --color-primary-500: #72569a;
+    --color-primary-600: #5f4780;
+    --color-primary-700: #4d3a68;
+    --color-primary-800: #3d2e52;
+    --color-primary-900: #2d2240;
+
+    /* Accent purple - lighter purple for highlights */
+    --color-accent-50: #faf5fc;
+    --color-accent-100: #f5ebf9;
+    --color-accent-200: #ebd7f3;
+    --color-accent-300: #dbb8ea;
+    --color-accent-400: #c88fe0;
+    --color-accent-500: #b667dc;
+    --color-accent-600: #9a4fc0;
+    --color-accent-700: #7d3f9c;
+    --color-accent-800: #633280;
+    --color-accent-900: #4a2561;
+
+    /* Coral - warm accent color */
+    --color-coral-50: #fef5f4;
+    --color-coral-100: #fdebe9;
+    --color-coral-200: #fbd7d3;
+    --color-coral-300: #f5b5ad;
+    --color-coral-400: #ec9386;
+    --color-coral-500: #e17868;
+    --color-coral-600: #c65a4a;
+    --color-coral-700: #a14839;
+    --color-coral-800: #7d382d;
+    --color-coral-900: #5a2921;
 }
