@@ -54,87 +54,90 @@ export default function Login() {
                 </div>
 
                 <form onSubmit={submit} className="space-y-4">
-                <div>
-                    <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-700">
-                        Email
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        className="block w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-500/10 focus:outline-none"
-                        placeholder="john@example.com"
-                        required
-                        autoFocus
-                        autoComplete="email"
-                    />
-                    {errors.email && <p className="mt-1.5 text-sm text-coral-600">{errors.email}</p>}
-                </div>
-
-                <div>
-                    <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-gray-700">
-                        Password
-                    </label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={data.password}
-                        onChange={(e) => setData('password', e.target.value)}
-                        className="block w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-500/10 focus:outline-none"
-                        placeholder="Enter your password"
-                        required
-                        autoComplete="current-password"
-                    />
-                    {errors.password && <p className="mt-1.5 text-sm text-coral-600">{errors.password}</p>}
-                </div>
-
-                <div className="flex items-center justify-between">
-                    <label className="flex cursor-pointer items-center gap-2">
+                    <div>
+                        <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-700">
+                            Email
+                        </label>
                         <input
-                            type="checkbox"
-                            checked={data.remember}
-                            onChange={(e) => setData('remember', e.target.checked)}
-                            className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                            id="email"
+                            type="email"
+                            value={data.email}
+                            onChange={(e) => setData('email', e.target.value)}
+                            className={`block w-full rounded-xl border bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:bg-white focus:ring-4 focus:outline-none ${
+                                errors.email
+                                    ? 'border-red-500 focus:border-red-500 focus:ring-red-500/10'
+                                    : 'border-gray-200 focus:border-primary-500 focus:ring-primary-500/10'
+                            }`}
+                            placeholder="john@example.com"
+                            autoFocus
+                            autoComplete="email"
                         />
-                        <span className="text-sm text-gray-600">Remember me</span>
-                    </label>
+                        {errors.email && <p className="mt-1.5 text-sm text-red-600">{errors.email}</p>}
+                    </div>
 
-                    <Link
-                        href="/forgot-password"
-                        className="text-sm font-medium text-primary-600 transition-colors hover:text-primary-700"
+                    <div>
+                        <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-gray-700">
+                            Password
+                        </label>
+                        <input
+                            id="password"
+                            type="password"
+                            value={data.password}
+                            onChange={(e) => setData('password', e.target.value)}
+                            className={`block w-full rounded-xl border bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:bg-white focus:ring-4 focus:outline-none ${
+                                errors.password
+                                    ? 'border-red-500 focus:border-red-500 focus:ring-red-500/10'
+                                    : 'border-gray-200 focus:border-primary-500 focus:ring-primary-500/10'
+                            }`}
+                            placeholder="Enter your password"
+                            autoComplete="current-password"
+                        />
+                        {errors.password && <p className="mt-1.5 text-sm text-red-600">{errors.password}</p>}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                        <label className="flex cursor-pointer items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={data.remember}
+                                onChange={(e) => setData('remember', e.target.checked)}
+                                className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                            />
+                            <span className="text-sm text-gray-600">Remember me</span>
+                        </label>
+
+                        <Link href="/forgot-password" className="text-sm font-medium text-primary-600 transition-colors hover:text-primary-700">
+                            Forgot password?
+                        </Link>
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={processing}
+                        className="mt-2 w-full rounded-xl bg-primary-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/25 transition-all hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-500/30 focus:ring-4 focus:ring-primary-500/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        Forgot password?
-                    </Link>
+                        {processing ? 'Signing in...' : 'Sign in'}
+                    </button>
+                </form>
+
+                {/* Divider */}
+                <div className="my-6 flex items-center gap-4">
+                    <div className="h-px flex-1 bg-gray-200" />
+                    <span className="text-sm text-gray-400">or continue with</span>
+                    <div className="h-px flex-1 bg-gray-200" />
                 </div>
 
+                {/* Google Sign In Button */}
                 <button
-                    type="submit"
-                    disabled={processing}
-                    className="mt-2 w-full rounded-xl bg-primary-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/25 transition-all hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-500/30 focus:ring-4 focus:ring-primary-500/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                    type="button"
+                    onClick={handleGoogleSignIn}
+                    className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm font-medium text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50 focus:ring-4 focus:ring-gray-100 focus:outline-none"
                 >
-                    {processing ? 'Signing in...' : 'Sign in'}
+                    <GoogleIcon />
+                    Google
                 </button>
-            </form>
 
-            {/* Divider */}
-            <div className="my-6 flex items-center gap-4">
-                <div className="h-px flex-1 bg-gray-200" />
-                <span className="text-sm text-gray-400">or continue with</span>
-                <div className="h-px flex-1 bg-gray-200" />
-            </div>
-
-            {/* Google Sign In Button */}
-            <button
-                type="button"
-                onClick={handleGoogleSignIn}
-                className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm font-medium text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50 focus:ring-4 focus:ring-gray-100 focus:outline-none"
-            >
-                <GoogleIcon />
-                Google
-            </button>
-
-            <p className="mt-8 text-center text-sm text-gray-500">
+                <p className="mt-8 text-center text-sm text-gray-500">
                     Don't have an account?{' '}
                     <Link href="/register" className="font-semibold text-primary-600 transition-colors hover:text-primary-700">
                         Sign up

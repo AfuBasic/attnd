@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -28,13 +29,20 @@ class CreateNewUser implements CreatesNewUsers
                 'max:255',
                 Rule::unique(User::class),
             ],
+            'user_type' => ['required', 'string', Rule::in(['organizer', 'attendee'])],
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-        ]);
+        // Wrap in transaction for atomicity
+        // Fortify dispatches Registered event after this returns,
+        // which triggers SendWelcomeEmail listener (queued)
+        return DB::transaction(function () use ($input) {
+            return User::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'user_type' => $input['user_type'],
+                'password' => Hash::make($input['password']),
+            ]);
+        });
     }
 }

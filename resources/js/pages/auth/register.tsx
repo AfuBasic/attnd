@@ -29,6 +29,7 @@ export default function Register() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         email: '',
+        user_type: 'attendee' as 'organizer' | 'attendee',
         password: '',
         password_confirmation: '',
     });
@@ -55,8 +56,7 @@ export default function Register() {
                 </div>
 
                 <form onSubmit={submit} className="space-y-4">
-                {/* Name and Email in a row on larger screens */}
-                <div className="grid gap-4 sm:grid-cols-2">
+                    {/* Full Name */}
                     <div>
                         <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-gray-700">
                             Full name
@@ -66,15 +66,19 @@ export default function Register() {
                             type="text"
                             value={data.name}
                             onChange={(e) => setData('name', e.target.value)}
-                            className="block w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-500/10 focus:outline-none"
+                            className={`block w-full rounded-xl border bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:bg-white focus:ring-4 focus:outline-none ${
+                                errors.name
+                                    ? 'border-red-500 focus:border-red-500 focus:ring-red-500/10'
+                                    : 'border-gray-200 focus:border-primary-500 focus:ring-primary-500/10'
+                            }`}
                             placeholder="John Doe"
-                            required
                             autoFocus
                             autoComplete="name"
                         />
-                        {errors.name && <p className="mt-1.5 text-sm text-coral-600">{errors.name}</p>}
+                        {errors.name && <p className="mt-1.5 text-sm text-red-600">{errors.name}</p>}
                     </div>
 
+                    {/* Email */}
                     <div>
                         <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-700">
                             Email
@@ -84,78 +88,130 @@ export default function Register() {
                             type="email"
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
-                            className="block w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-500/10 focus:outline-none"
+                            className={`block w-full rounded-xl border bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:bg-white focus:ring-4 focus:outline-none ${
+                                errors.email
+                                    ? 'border-red-500 focus:border-red-500 focus:ring-red-500/10'
+                                    : 'border-gray-200 focus:border-primary-500 focus:ring-primary-500/10'
+                            }`}
                             placeholder="john@example.com"
-                            required
                             autoComplete="email"
                         />
-                        {errors.email && <p className="mt-1.5 text-sm text-coral-600">{errors.email}</p>}
+                        {errors.email && <p className="mt-1.5 text-sm text-red-600">{errors.email}</p>}
                     </div>
+
+                    {/* Account Type Selection */}
+                    <div>
+                        <label className="mb-2 block text-sm font-medium text-gray-700">I want to</label>
+                        <div className="grid grid-cols-2 gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setData('user_type', 'attendee')}
+                                className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all ${
+                                    data.user_type === 'attendee'
+                                        ? 'border-primary-500 bg-primary-50 text-primary-700'
+                                        : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50'
+                                }`}
+                            >
+                                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                    />
+                                </svg>
+                                <span className="text-sm font-medium">Attend Events</span>
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setData('user_type', 'organizer')}
+                                className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all ${
+                                    data.user_type === 'organizer'
+                                        ? 'border-primary-500 bg-primary-50 text-primary-700'
+                                        : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50'
+                                }`}
+                            >
+                                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                    />
+                                </svg>
+                                <span className="text-sm font-medium">Organize Events</span>
+                            </button>
+                        </div>
+                        {errors.user_type && <p className="mt-1.5 text-sm text-red-600">{errors.user_type}</p>}
+                    </div>
+
+                    <div>
+                        <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-gray-700">
+                            Password
+                        </label>
+                        <input
+                            id="password"
+                            type="password"
+                            value={data.password}
+                            onChange={(e) => setData('password', e.target.value)}
+                            className={`block w-full rounded-xl border bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:bg-white focus:ring-4 focus:outline-none ${
+                                errors.password
+                                    ? 'border-red-500 focus:border-red-500 focus:ring-red-500/10'
+                                    : 'border-gray-200 focus:border-primary-500 focus:ring-primary-500/10'
+                            }`}
+                            placeholder="Min. 8 characters"
+                            autoComplete="new-password"
+                        />
+                        {errors.password && <p className="mt-1.5 text-sm text-red-600">{errors.password}</p>}
+                    </div>
+
+                    <div>
+                        <label htmlFor="password_confirmation" className="mb-1.5 block text-sm font-medium text-gray-700">
+                            Confirm password
+                        </label>
+                        <input
+                            id="password_confirmation"
+                            type="password"
+                            value={data.password_confirmation}
+                            onChange={(e) => setData('password_confirmation', e.target.value)}
+                            className={`block w-full rounded-xl border bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:bg-white focus:ring-4 focus:outline-none ${
+                                errors.password_confirmation
+                                    ? 'border-red-500 focus:border-red-500 focus:ring-red-500/10'
+                                    : 'border-gray-200 focus:border-primary-500 focus:ring-primary-500/10'
+                            }`}
+                            placeholder="Confirm your password"
+                            autoComplete="new-password"
+                        />
+                        {errors.password_confirmation && <p className="mt-1.5 text-sm text-red-600">{errors.password_confirmation}</p>}
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={processing}
+                        className="mt-2 w-full rounded-xl bg-primary-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/25 transition-all hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-500/30 focus:ring-4 focus:ring-primary-500/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        {processing ? 'Creating account...' : 'Create account'}
+                    </button>
+                </form>
+
+                {/* Divider */}
+                <div className="my-6 flex items-center gap-4">
+                    <div className="h-px flex-1 bg-gray-200" />
+                    <span className="text-sm text-gray-400">or continue with</span>
+                    <div className="h-px flex-1 bg-gray-200" />
                 </div>
 
-                <div>
-                    <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-gray-700">
-                        Password
-                    </label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={data.password}
-                        onChange={(e) => setData('password', e.target.value)}
-                        className="block w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-500/10 focus:outline-none"
-                        placeholder="Min. 8 characters"
-                        required
-                        autoComplete="new-password"
-                    />
-                    {errors.password && <p className="mt-1.5 text-sm text-coral-600">{errors.password}</p>}
-                </div>
-
-                <div>
-                    <label htmlFor="password_confirmation" className="mb-1.5 block text-sm font-medium text-gray-700">
-                        Confirm password
-                    </label>
-                    <input
-                        id="password_confirmation"
-                        type="password"
-                        value={data.password_confirmation}
-                        onChange={(e) => setData('password_confirmation', e.target.value)}
-                        className="block w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-gray-900 placeholder-gray-400 transition-all focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-500/10 focus:outline-none"
-                        placeholder="Confirm your password"
-                        required
-                        autoComplete="new-password"
-                    />
-                    {errors.password_confirmation && (
-                        <p className="mt-1.5 text-sm text-coral-600">{errors.password_confirmation}</p>
-                    )}
-                </div>
-
+                {/* Google Sign In Button */}
                 <button
-                    type="submit"
-                    disabled={processing}
-                    className="mt-2 w-full rounded-xl bg-primary-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/25 transition-all hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-500/30 focus:ring-4 focus:ring-primary-500/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                    type="button"
+                    onClick={handleGoogleSignIn}
+                    className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm font-medium text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50 focus:ring-4 focus:ring-gray-100 focus:outline-none"
                 >
-                    {processing ? 'Creating account...' : 'Create account'}
+                    <GoogleIcon />
+                    Google
                 </button>
-            </form>
 
-            {/* Divider */}
-            <div className="my-6 flex items-center gap-4">
-                <div className="h-px flex-1 bg-gray-200" />
-                <span className="text-sm text-gray-400">or continue with</span>
-                <div className="h-px flex-1 bg-gray-200" />
-            </div>
-
-            {/* Google Sign In Button */}
-            <button
-                type="button"
-                onClick={handleGoogleSignIn}
-                className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-sm font-medium text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50 focus:ring-4 focus:ring-gray-100 focus:outline-none"
-            >
-                <GoogleIcon />
-                Google
-            </button>
-
-            <p className="mt-8 text-center text-sm text-gray-500">
+                <p className="mt-8 text-center text-sm text-gray-500">
                     Already have an account?{' '}
                     <Link href="/login" className="font-semibold text-primary-600 transition-colors hover:text-primary-700">
                         Sign in
